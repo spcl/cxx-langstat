@@ -33,7 +33,6 @@ find_package(LLVM REQUIRED CONFIG)
 message(STATUS "Found LLVM ${LLVM_PACKAGE_VERSION}")
 message(STATUS "Using LLVMConfig.cmake in: ${LLVM_DIR}")
 # Show where LLVM includes are
-include_directories(${LLVM_INCLUDE_DIRS})
 message(STATUS "Found LLVM include dirs: ${LLVM_INCLUDE_DIRS}")
 
 # Find llvm-config
@@ -47,8 +46,8 @@ execute_process(COMMAND ${llvm-config} --libs # --system-libs--ignore-libllvm
     OUTPUT_STRIP_TRAILING_WHITESPACE
 )
 
-# find_package(clang REQUIRED CONFIG)
-# message(STATUS "Using ClangConfig.cmake in: ${clang_DIR}")
+include("${CLANG_DIR}/ClangConfig.cmake")
+message(STATUS "Using ClangConfig.cmake in: ${CLANG_DIR}")
 
 message(STATUS "LLVM libs: ${llvm_libs}")
 string(REPLACE "-l" "" llvm_libs ${llvm_libs})
@@ -61,13 +60,15 @@ set(clang_libs
     clangFrontendTool clangRewriteFrontend clangDynamicASTMatchers
     clangTooling clangFrontend clangToolingCore clangASTMatchers
     clangParse clangDriver clangSerialization clangRewrite clangSema
-    clangEdit clangAnalysis clangAST clangLex clangBasic
+    clangEdit clangAnalysis clangAST clangLex clangAPINotes clangBasic clangSupport
 )
 # message(STATUS "Clang libs: $${clang_libs}")
 
 # --- Where to look for includes ----
 # Includes from cxx-langstat thus are #include "cxx-langstat/<header>"
 include_directories(include)
+include_directories(${LLVM_INCLUDE_DIRS})
+include_directories(${CLANG_INCLUDE_DIRS})
 
 # Directory to search for library/src files
 add_subdirectory(lib)
@@ -88,7 +89,7 @@ target_link_libraries(${PROJECT_NAME}
     AnalysisList
     Analyses
     MatchingExtractor
-    ${llvm_libs} ${clang_libs}
+    ${clang_libs} ${llvm_libs} 
 )
 
 
