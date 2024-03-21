@@ -60,7 +60,7 @@ set(clang_libs
     clangFrontendTool clangRewriteFrontend clangDynamicASTMatchers
     clangTooling clangFrontend clangToolingCore clangASTMatchers
     clangParse clangDriver clangSerialization clangRewrite clangSema
-    clangEdit clangAnalysis clangAST clangLex clangAPINotes clangBasic clangSupport
+    clangEdit clangAnalysis clangAST clangLex clangAPINotes clangBasic
 )
 # message(STATUS "Clang libs: $${clang_libs}")
 
